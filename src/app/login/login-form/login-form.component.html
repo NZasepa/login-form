@@ -1,0 +1,19 @@
+<div class="lf-card">
+  <header class="lf-login-header">
+    <h1>Sign in</h1>
+    <p>to the dashboard</p>
+  </header>
+  <form class="lf-login-form" [formGroup]="loginForm">
+    <div class="lf-field-group"
+         [ngClass]="{ 'valid': email.valid, 'invalid': email.invalid, 'empty': !email.value }"
+         [lfFieldFocus]="email">
+      <label for="lf-login-email">E-mail</label>
+      <input id="lf-login-email" type="email" formControlName="email" #email>
+    </div>
+
+    <div class="lf-field-group" [ngClass]="{ 'valid': password.valid, 'invalid': password.invalid, 'empty': !password.value }">
+      <label for="lf-login-password">Password</label>
+      <input id="lf-login-password" type="password" formControlName="password">
+    </div>
+  </form>
+</div>
