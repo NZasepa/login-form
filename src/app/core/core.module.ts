@@ -1,6 +1,5 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { LoginServices } from '../login/login.services';
 
 @NgModule({
   imports: [
@@ -8,9 +7,13 @@ import { LoginServices } from '../login/login.services';
   ],
   exports: [
     BrowserModule
-  ],
-  providers: [
-    LoginServices
   ]
 })
-export class CoreModule { }
+export class CoreModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: CoreModule,
+      providers: []
+    };
+  }
+}
