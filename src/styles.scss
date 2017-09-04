@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+@import './assets/scss/all';
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  font-family: $general-font-family;
+  background-color: $general-bg-color;
+}
