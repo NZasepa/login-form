@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FieldFocusDirective } from './field-focus/field-focus.directive';
+import { IsFieldFocusedDirective } from './is-field-focused/is-field-focused.directive';
+import { FocusOnInitDirective } from './focus-on-init/focus-on-init.directive';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [
-    FieldFocusDirective
+    IsFieldFocusedDirective,
+    FocusOnInitDirective,
   ],
   exports: [
-    FieldFocusDirective
+    IsFieldFocusedDirective,
+    FocusOnInitDirective
   ]
 })
 export class DirectivesModule { }
