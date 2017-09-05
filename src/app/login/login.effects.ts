@@ -1,8 +1,42 @@
 import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { Observable } from 'rxjs/Observable';
+import { Action } from '@ngrx/store';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+
+import { LoginServices } from './login.services';
+import * as LoginActions from './login.actions';
+import { LoginData } from './login.models';
+import 'rxjs/add/operator/skip';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/delay';
 
 @Injectable()
 export class LoginEffects {
-  constructor() {
+  @Effect()
+  authenticate$: Observable<Action> = this.actions$
+    .ofType(LoginActions.LOGIN_REQUESTED)
+    .map((action: LoginActions.LoginRequested) => action.payload)
+    .switchMap((loginData: LoginData) => {
+      const nextAuthenticate$ = this.actions$.ofType(LoginActions.LOGIN_REQUESTED).skip(1);
 
-  }
+      console.log(loginData);
+
+      return this.loginService.authenticate(loginData.email, loginData.password)
+        // .delay(3000)
+        .takeUntil(nextAuthenticate$)
+        .map((result) => {
+          console.log(result);
+          return new LoginActions.LoginSuccess();
+        })
+        .catch((err) => {
+          console.log(err);
+          return Observable.of(new LoginActions.LoginFailure());
+        });
+    });
+
+  constructor(private actions$: Actions, private loginService: LoginServices) { }
 }

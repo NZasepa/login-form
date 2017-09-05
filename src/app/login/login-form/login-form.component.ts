@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { LoginData } from '../login.models';
 
 @Component({
   selector: 'lf-login-form',
@@ -12,14 +13,41 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
       transition('void => in', [
         style({ transform: 'translateX(100%)', opacity: 0 }),
         animate('.6s .5s ease-in-out')
+      ]),
+      transition('* => void', [
+        animate('.4s ease-in-out', style({
+          transform: 'translate(-100%)',
+          opacity: 0
+        }))
       ])
-    ])
+    ]),
+    trigger('fadeSuccessCardIn', [
+      state('in', style({ transform: 'translateX(0)', opacity: 1 })),
+      transition('void => in', [
+        style({ transform: 'translateX(100%)', opacity: 0 }),
+        animate('.6s .5s ease-in-out')
+      ]),
+      transition('* => void', [
+        animate('.6s ease-in-out', style({
+          transform: 'translate(-100%)',
+          opacity: 0
+        }))
+      ])
+    ]),
   ]
 })
 export class LoginFormComponent implements OnInit {
-  loginForm: FormGroup;
+  @Input() loading: boolean;
+  @Input() step: string;
 
-  constructor(private fb: FormBuilder) { }
+  @Output() onLogin: EventEmitter<LoginData>;
+
+  loginForm: FormGroup;
+  authenticated = false;
+
+  constructor(private fb: FormBuilder) {
+    this.onLogin = new EventEmitter<LoginData>();
+  }
 
   ngOnInit() {
     // Init form controls
@@ -28,12 +56,31 @@ export class LoginFormComponent implements OnInit {
 
   createForm() {
     this.loginForm = this.fb.group({
-      email: [''],
-      password: [''],
-      remember: ['']
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      password: ['', Validators.compose([Validators.required])],
+      remember: [false]
     });
+  }
 
-    console.log(this.loginForm.get('email'));
+  onFormAnimationDone(event) {
+    if (event.fromState === 'in' && event.toState === 'void') {
+      this.authenticated = true;
+    }
+  }
+
+  prepareData(): LoginData {
+    const formModel = this.loginForm.value;
+
+    return {
+      email: formModel.email as string,
+      password: formModel.password as string,
+      remember: formModel.remember
+    };
+  }
+
+  onSubmit() {
+    const formData = this.prepareData();
+    this.onLogin.emit(formData);
   }
 
   get email() {

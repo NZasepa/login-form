@@ -1,9 +1,9 @@
-<div class="lf-card" [@fadeCardIn]="'in'">
+<div class="lf-card lf-login-card" [@fadeCardIn]="'in'" (@fadeCardIn.done)="onFormAnimationDone($event)" *ngIf="step !== 'success'">
   <header class="lf-login-header">
     <h1>Sign in</h1>
     <p>to the dashboard</p>
   </header>
-  <form class="lf-login-form" [formGroup]="loginForm">
+  <form class="lf-login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="lf-field-group"
          [ngClass]="{ 'valid': email.valid, 'invalid': email.invalid, 'empty': !email.value }"
          [lfIsFieldFocused]="email">
@@ -27,4 +27,8 @@
       <button class="lf-btn lf-btn-submit" type="submit">Log In</button>
     </div>
   </form>
+</div>
+
+<div class="lf-card lf-card-success" [@fadeSuccessCardIn]="'in'" *ngIf="authenticated">
+  Login success
 </div>

@@ -34,6 +34,12 @@ body {
   border-radius: 3px;
   background-color: #ffffff;
   box-shadow: 0 15px 100px 0 rgba(0, 0, 0, 0.3);
+
+  &-success {
+    color: #ffffff;
+    text-align: center;
+    background-color: #24b83f;
+  }
 }
 
 /**
