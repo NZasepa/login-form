@@ -23,13 +23,18 @@ export class LoginEffects {
     .switchMap((loginData: LoginData) => {
       const nextAuthenticate$ = this.actions$.ofType(LoginActions.LOGIN_REQUESTED).skip(1);
 
-      console.log(loginData);
-
       return this.loginService.authenticate(loginData.email, loginData.password)
         // .delay(3000)
         .takeUntil(nextAuthenticate$)
         .map((result) => {
-          console.log(result);
+          // If "remember" is ticked, save email
+          if (loginData.remember) {
+            localStorage.setItem('loginEmail', loginData.email);
+          } else {
+            // Otherwise, remove currently saved email
+            localStorage.removeItem('loginEmail');
+          }
+
           return new LoginActions.LoginSuccess();
         })
         .catch((err) => {

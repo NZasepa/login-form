@@ -1,34 +1,36 @@
-<div class="lf-card lf-login-card" [@fadeCardIn]="'in'" (@fadeCardIn.done)="onFormAnimationDone($event)" *ngIf="step !== 'success'">
-  <header class="lf-login-header">
-    <h1>Sign in</h1>
-    <p>to the dashboard</p>
-  </header>
-  <form class="lf-login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="lf-field-group"
-         [ngClass]="{ 'valid': email.valid, 'invalid': email.invalid, 'empty': !email.value }"
-         [lfIsFieldFocused]="email">
-      <label for="lf-login-email">E-mail</label>
-      <input id="lf-login-email" type="email" formControlName="email" placeholder="E-mail" lfFocusOnInit #email>
-    </div>
+<div class="lf-login-form-container">
+  <div class="lf-card lf-login-card" [@fadeCardIn]="'in'" (@fadeCardIn.done)="onFormAnimationDone($event)" *ngIf="step !== 'success'">
+    <header class="lf-login-header">
+      <h1>Sign in</h1>
+      <p>to the dashboard</p>
+    </header>
+    <form class="lf-login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="lf-field-group"
+           [ngClass]="{ 'valid': email.valid, 'invalid': email.invalid, 'empty': !email.value }"
+           [lfIsFieldFocused]="email">
+        <label for="lf-login-email">E-mail</label>
+        <input id="lf-login-email" type="email" formControlName="email" placeholder="E-mail" lfFocusOnInit #email>
+      </div>
 
-    <div class="lf-field-group"
-         [ngClass]="{ 'valid': password.valid, 'invalid': password.invalid, 'empty': !password.value }"
-         [lfIsFieldFocused]="password">
-      <label for="lf-login-password">Password</label>
-      <input id="lf-login-password" type="password" formControlName="password" placeholder="Password" #password>
-    </div>
+      <div class="lf-field-group"
+           [ngClass]="{ 'valid': password.valid, 'invalid': password.invalid, 'empty': !password.value }"
+           [lfIsFieldFocused]="password">
+        <label for="lf-login-password">Password</label>
+        <input id="lf-login-password" type="password" formControlName="password" placeholder="Password" #password>
+      </div>
 
-    <div class="lf-field-submission">
-      <label for="lf-login-remember" class="lf-field-checkbox" [ngClass]="{ 'checked': remember.value }">
-        <input id="lf-login-remember" type="checkbox" formControlName="remember">
-        <span>Tick to remember</span>
-      </label>
+      <div class="lf-field-submission">
+        <label for="lf-login-remember" class="lf-field-checkbox" [ngClass]="{ 'checked': remember.value }">
+          <input id="lf-login-remember" type="checkbox" formControlName="remember">
+          <span>Tick to remember</span>
+        </label>
 
-      <button class="lf-btn lf-btn-submit" type="submit">Log In</button>
-    </div>
-  </form>
-</div>
+        <button class="lf-btn lf-btn-submit" type="submit">Log In</button>
+      </div>
+    </form>
+  </div>
 
-<div class="lf-card lf-card-success" [@fadeSuccessCardIn]="'in'" *ngIf="authenticated">
-  Login success
+  <div class="lf-card lf-card-success" [@fadeSuccessCardIn]="'in'" *ngIf="authenticated">
+    Login success
+  </div>
 </div>

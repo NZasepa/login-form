@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { LoginData } from '../login.models';
@@ -36,7 +36,7 @@ import { LoginData } from '../login.models';
     ]),
   ]
 })
-export class LoginFormComponent implements OnInit {
+export class LoginFormComponent implements OnInit, AfterViewInit {
   @Input() loading: boolean;
   @Input() step: string;
 
@@ -45,7 +45,7 @@ export class LoginFormComponent implements OnInit {
   loginForm: FormGroup;
   authenticated = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private changeRef: ChangeDetectorRef) {
     this.onLogin = new EventEmitter<LoginData>();
   }
 
@@ -60,6 +60,20 @@ export class LoginFormComponent implements OnInit {
       password: ['', Validators.compose([Validators.required])],
       remember: [false]
     });
+  }
+
+  ngAfterViewInit() {
+    // Get saved email
+    const savedEmail = localStorage.getItem('loginEmail');
+
+    // Set saved email
+    if (savedEmail) {
+      this.loginForm.get('email').setValue(savedEmail);
+      this.loginForm.get('remember').setValue(true);
+
+      // Detect changes
+      this.changeRef.detectChanges();
+    }
   }
 
   onFormAnimationDone(event) {

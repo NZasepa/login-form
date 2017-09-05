@@ -5,10 +5,15 @@
 }
 
 body {
-  position: relative;
-  min-height: 100vh;
   font-family: $general-font-family;
   background: #{$general-bg-color} linear-gradient(135deg, #5dcbff, #26b6ce);
+  overflow: hidden;
+}
+
+main {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
   overflow: hidden;
 
   &:after {
@@ -83,6 +88,11 @@ body {
     &::before {
       transform: translate(-45%, -45%);
     }
+  }
+
+  @include mobile() {
+    width: 100%;
+    margin-top: 1.5rem;
   }
 }
 
@@ -211,4 +221,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @include mobile() {
+    flex-direction: column;
+  }
 }

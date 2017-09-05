@@ -1,9 +1,19 @@
 @import '../../../assets/scss/all';
 
+:host {
+  @include mobile() {
+    flex-grow: 1;
+  }
+}
+
 .lf-login-card {
   min-height: $lf-min-height;
   width: $lf-width;
   padding: 2.5rem;
+
+  @include mobile() {
+    width: 100%;
+  }
 }
 
 .lf-card-success {
@@ -11,6 +21,10 @@
   padding: 2.5rem;
   font-family: $heading-font-family;
   font-size: 22px;
+
+  @include mobile() {
+    width: 100%;
+  }
 }
 
 .lf-login-header {
