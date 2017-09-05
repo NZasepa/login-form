@@ -27,6 +27,22 @@
   }
 }
 
+.lf-card-failure {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-top: 15px;
+  font-size: 14px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.lf-login-form-container {
+  position: relative;
+}
+
 .lf-login-header {
   position: relative;
   margin-bottom: 1.2rem;

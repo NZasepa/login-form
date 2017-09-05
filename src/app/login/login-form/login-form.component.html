@@ -30,6 +30,15 @@
     </form>
   </div>
 
+  <div class="lf-card lf-card-failure" [@fadeFailureCard]="'in'" *ngIf="step === 'validation' && (!email.valid || !password.valid)">
+    <p *ngIf="!email.valid">Invalid email</p>
+    <p *ngIf="!password.valid">Invalid password</p>
+  </div>
+
+  <div class="lf-card lf-card-failure" [@fadeFailureCard]="'in'" *ngIf="step === 'failure'">
+    Invalid E-mail or Password
+  </div>
+
   <div class="lf-card lf-card-success" [@fadeSuccessCardIn]="'in'" *ngIf="authenticated">
     Login success
   </div>

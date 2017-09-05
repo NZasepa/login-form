@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnIni
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { LoginData } from '../login.models';
+import { passwordValidator } from '../login.validators';
 
 @Component({
   selector: 'lf-login-form',
@@ -34,6 +35,19 @@ import { LoginData } from '../login.models';
         }))
       ])
     ]),
+    trigger('fadeFailureCard', [
+      state('in', style({ transform: 'translateY(0)', opacity: 1 })),
+      transition('void => in', [
+        style({ transform: 'translateY(50px)', opacity: 0 }),
+        animate('.6s .5s ease-in-out')
+      ]),
+      transition('* => void', [
+        animate('.6s ease-in-out', style({
+          transform: 'translateY(50px)',
+          opacity: 0
+        }))
+      ])
+    ]),
   ]
 })
 export class LoginFormComponent implements OnInit, AfterViewInit {
@@ -57,7 +71,7 @@ export class LoginFormComponent implements OnInit, AfterViewInit {
   createForm() {
     this.loginForm = this.fb.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', Validators.compose([Validators.required])],
+      password: ['', Validators.compose([Validators.required, Validators.minLength(6), passwordValidator()])],
       remember: [false]
     });
   }
@@ -84,6 +98,7 @@ export class LoginFormComponent implements OnInit, AfterViewInit {
 
   prepareData(): LoginData {
     const formModel = this.loginForm.value;
+    console.log(this.loginForm);
 
     return {
       email: formModel.email as string,

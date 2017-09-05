@@ -32,7 +32,7 @@ export function reducer(state = initialState, action: loginActions.Actions) {
       return {
         ...state,
         loading: false,
-        step: 'failure'
+        step: action.payload.status === 403 ? 'failure' : 'validation'
       };
     }
 

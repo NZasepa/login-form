@@ -35,11 +35,10 @@ export class LoginEffects {
             localStorage.removeItem('loginEmail');
           }
 
-          return new LoginActions.LoginSuccess();
+          return new LoginActions.LoginSuccess(result);
         })
         .catch((err) => {
-          console.log(err);
-          return Observable.of(new LoginActions.LoginFailure());
+          return Observable.of(new LoginActions.LoginFailure(err));
         });
     });
 
