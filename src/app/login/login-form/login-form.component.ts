@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges,
+  AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges,
   OnInit,
   Output, SimpleChange, SimpleChanges, ViewChild
 } from '@angular/core';
@@ -12,7 +12,6 @@ import { passwordValidator } from '../login.validators';
   selector: 'lf-login-form',
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('fadeCardIn', [
       state('in', style({ transform: 'translateX(0)', opacity: 1 })),
@@ -112,7 +111,6 @@ export class LoginFormComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges) {
     const step: SimpleChange = changes.step;
 
-    console.log(step);
     if (step && step.currentValue === 'failure') {
       this.password.setValue('');
       this.passwordInput.nativeElement.focus();
@@ -137,7 +135,6 @@ export class LoginFormComponent implements OnInit, OnChanges, AfterViewInit {
    */
   prepareData(): LoginData {
     const formModel = this.loginForm.value;
-    console.log(this.loginForm);
 
     return {
       email: formModel.email as string,
