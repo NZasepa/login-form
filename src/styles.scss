@@ -1,5 +1,19 @@
 @import './assets/scss/all';
 
+@keyframes scaleCircle {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 *, *:before, *:after {
   box-sizing: border-box;
 }
@@ -77,6 +91,29 @@ main {
   &::before {
     content: ' ';
     position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 25px;
+    height: 25px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0);
+    transition: all .2s .2s ease-in-out;
+    animation: scaleCircle 1.5s ease-in-out 0s infinite;
+
+    form.loading & {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+  }
+
+  &::after {
+    content: ' ';
+    position: absolute;
     top: 0;
     left: 0;
     height: 200%;
@@ -87,10 +124,20 @@ main {
     z-index: -1;
   }
 
+  span {
+    display: inline-block;
+    opacity: 1;
+    transition: opacity .4s ease-in-out;
+
+    form.loading & {
+      opacity: 0;
+    }
+  }
+
   &:hover {
     box-shadow: 0 0 30px rgba(0, 0, 0, .25);
 
-    &::before {
+    &::after {
       transform: translate(-45%, -45%);
     }
   }
@@ -107,6 +154,26 @@ main {
 .lf-field-group {
   position: relative;
   margin-bottom: 1.2rem;
+
+  &::before {
+    content: ' ';
+    position: absolute;
+    top: -5px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: block;
+    background-color: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all .2s ease-in-out;
+    z-index: 15;
+
+    form.loading & {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
 
   &::after {
     content: ' ';
@@ -152,6 +219,17 @@ main {
   &.focused {
     &::after {
       width: 100%;
+    }
+  }
+
+  &.invalid {
+    &::after {
+      width: 100%;
+      background-color: #ce4747;
+    }
+
+    label {
+      color: #ce4747;
     }
   }
 }

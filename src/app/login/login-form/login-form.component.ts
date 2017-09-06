@@ -1,4 +1,8 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges,
+  OnInit,
+  Output, SimpleChange, SimpleChanges, ViewChild
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { LoginData } from '../login.models';
@@ -8,6 +12,7 @@ import { passwordValidator } from '../login.validators';
   selector: 'lf-login-form',
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('fadeCardIn', [
       state('in', style({ transform: 'translateX(0)', opacity: 1 })),
@@ -50,11 +55,13 @@ import { passwordValidator } from '../login.validators';
     ]),
   ]
 })
-export class LoginFormComponent implements OnInit, AfterViewInit {
+export class LoginFormComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() loading: boolean;
   @Input() step: string;
 
   @Output() onLogin: EventEmitter<LoginData>;
+
+  @ViewChild('passwordInput') passwordInput: ElementRef;
 
   loginForm: FormGroup;
   authenticated = false;
@@ -68,6 +75,9 @@ export class LoginFormComponent implements OnInit, AfterViewInit {
     this.createForm();
   }
 
+  /**
+   * Create reactive form
+   */
   createForm() {
     this.loginForm = this.fb.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
@@ -76,26 +86,55 @@ export class LoginFormComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * After view is initialized
+   */
   ngAfterViewInit() {
     // Get saved email
     const savedEmail = localStorage.getItem('loginEmail');
 
     // Set saved email
     if (savedEmail) {
-      this.loginForm.get('email').setValue(savedEmail);
-      this.loginForm.get('remember').setValue(true);
+      this.email.setValue(savedEmail);
+      this.remember.setValue(true);
 
       // Detect changes
       this.changeRef.detectChanges();
     }
   }
 
+  /**
+   * On detected changes
+   * Check if failed to log in - remove password
+   *
+   * @param {SimpleChanges} changes
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    const step: SimpleChange = changes.step;
+
+    console.log(step);
+    if (step && step.currentValue === 'failure') {
+      this.password.setValue('');
+      this.passwordInput.nativeElement.focus();
+    }
+  }
+
+  /**
+   * Form animation completed
+   *
+   * @param event
+   */
   onFormAnimationDone(event) {
     if (event.fromState === 'in' && event.toState === 'void') {
       this.authenticated = true;
     }
   }
 
+  /**
+   * Prepare data for submission
+   *
+   * @returns {LoginData}
+   */
   prepareData(): LoginData {
     const formModel = this.loginForm.value;
     console.log(this.loginForm);
@@ -107,6 +146,9 @@ export class LoginFormComponent implements OnInit, AfterViewInit {
     };
   }
 
+  /**
+   * On login form submission
+   */
   onSubmit() {
     const formData = this.prepareData();
     this.onLogin.emit(formData);

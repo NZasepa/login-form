@@ -20,7 +20,7 @@ export function passwordValidator() {
 
     if (!largeCheck || !smallCheck || !numberCheck) {
       return {
-        matchOther: true
+        password: true
       };
     }
 
