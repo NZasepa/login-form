@@ -14,27 +14,27 @@ import { passwordValidator } from '../login.validators';
   styleUrls: ['./login-form.component.scss'],
   animations: [
     trigger('fadeCardIn', [
-      state('in', style({ transform: 'translateX(0)', opacity: 1 })),
+      state('in', style({ transform: 'translateY(0)', opacity: 1 })),
       transition('void => in', [
-        style({ transform: 'translateX(100%)', opacity: 0 }),
+        style({ transform: 'translateY(50%)', opacity: 0 }),
         animate('.6s .5s ease-in-out')
       ]),
       transition('* => void', [
         animate('.4s ease-in-out', style({
-          transform: 'translate(-100%)',
+          transform: 'translateY(-100%)',
           opacity: 0
         }))
       ])
     ]),
     trigger('fadeSuccessCardIn', [
-      state('in', style({ transform: 'translateX(0)', opacity: 1 })),
+      state('in', style({ transform: 'translateY(0)', opacity: 1 })),
       transition('void => in', [
-        style({ transform: 'translateX(100%)', opacity: 0 }),
+        style({ transform: 'translateY(50%)', opacity: 0 }),
         animate('.6s .5s ease-in-out')
       ]),
       transition('* => void', [
         animate('.6s ease-in-out', style({
-          transform: 'translate(-100%)',
+          transform: 'translateY(-100%)',
           opacity: 0
         }))
       ])
